@@ -1,0 +1,10 @@
+{
+	"id": "ultimate-csv-plugin",
+	"name": "Ultimate CSV Plugin",
+	"version": "0.1",
+	"minAppVersion": "0.12.0",
+	"description": "View and edit CSV files",
+	"author": "IntegerVector",
+	"authorUrl": "https://github.com/IntegerVector/ultimate-csv-plugin",
+	"isDesktopOnly": false
+}

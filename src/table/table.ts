@@ -1,6 +1,6 @@
 import { TableRow } from './row';
 
-export class CSVTable {
+export class CsvTable {
     public tableElement = document.createElement('table');
 
     public setData(rows: string[][]): void {

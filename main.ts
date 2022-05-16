@@ -4,6 +4,7 @@ import {
 	TextFileView
 } from 'obsidian';
 
+import { CSV } from './src/csv-parser';
 import { CSVTable } from './src/table/table';
 
 export default class UltimateCsvPlugin extends Plugin {
@@ -22,7 +23,6 @@ class CsvView extends TextFileView {
 
 	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);
-
 		this.extContentEl.appendChild(this.table.tableElement);
 	}
 
@@ -31,17 +31,20 @@ class CsvView extends TextFileView {
 	}
 
 	setViewData(data: string, clear: boolean): void {
-		this.table.setData(data);
+		CSV.parse(data).then((parsed) => {
+			this.table.clear();
+			this.table.setData(parsed);
+		});
 	}
 
 	clear(): void {
+		this.table.clear();
 	}
 
 	getDisplayText(): string {
-		if (this.file) {
-			return this.file.basename;
-		}
-		else return 'No file';
+		return this.file
+			? this.file.basename
+			: 'No file';
 	}
 
 	canAcceptExtension(extension: string): boolean {

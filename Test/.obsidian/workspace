@@ -7,10 +7,9 @@
         "id": "72ab1b6994e086e2",
         "type": "leaf",
         "state": {
-          "type": "markdown",
+          "type": "csv",
           "state": {
-            "file": "test.md",
-            "mode": "preview"
+            "file": "Operations.csv"
           }
         }
       }
@@ -68,7 +67,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "test.md",
+                "file": "Operations.csv",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,10 +87,10 @@
   },
   "active": "72ab1b6994e086e2",
   "lastOpenFiles": [
-    "test.md",
-    "Vaccinations.csv",
     "Operations.csv",
     "Dictionary.csv",
+    "Vaccinations.csv",
+    "test.md",
     "Finance.csv"
   ]
 }

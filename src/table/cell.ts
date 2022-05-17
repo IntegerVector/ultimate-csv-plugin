@@ -8,20 +8,24 @@ export class TableCell {
         const container = document.createElement('div');
         
         container.textContent = text;
+
+        this.element.ondblclick = () => {
+            this.element.className = 'focused';
+            container.contentEditable = 'true';
+            container.focus();
+        }
+
         container.onblur = () => {
-            container.contentEditable = 'false';
             this.element.className = '';
+            container.contentEditable = 'false';
+
             tableState.$data.next({
                 data: container.textContent,
                 row: rowIndex,
                 cell: cellIndex
             });
         };
-        container.ondblclick = () => {
-            container.contentEditable = 'true';
-            container.focus();
-            this.element.className = 'focused';
-        }
+
         this.element.appendChild(container);
     }
 

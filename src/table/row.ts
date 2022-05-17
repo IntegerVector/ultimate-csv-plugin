@@ -3,12 +3,12 @@ import { TableCell } from 'src/table/cell';
 export class TableRow {
     private element: HTMLElement;
 
-    constructor(cells: string[], rowNumber: number) {
+    constructor(cells: string[], rowIndex: number) {
         this.element = document.createElement('tr');
 
-        cells.forEach(cell => {
+        cells.forEach((cellData, cellIndex) => {
             this.element.appendChild(
-                (new TableCell('' + cell)).getCell()
+                (new TableCell('' + cellData, rowIndex, cellIndex)).getCell()
             );
         });
     }

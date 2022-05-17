@@ -4,50 +4,62 @@ import {
 } from 'obsidian';
 
 import { CsvTable } from 'src/table/table';
-import { CSV } from 'src/csv-parser';
+import { CSV } from 'src/common/csv-parser';
+import { tableState } from 'src/table-state-manager';
 
 export class CsvView extends TextFileView {
     public get extContentEl(): HTMLElement {
-		return this.contentEl;
-	}
+        return this.contentEl;
+    }
 
-	public table = new CsvTable();
+    public table = new CsvTable();
 
-	constructor(leaf: WorkspaceLeaf) {
-		super(leaf);
-		this.extContentEl.appendChild(this.table.tableElement);
-	}
+    constructor(leaf: WorkspaceLeaf) {
+        super(leaf);
 
-	getViewData(): string {
-		return this.data;
-	}
+        this.extContentEl.appendChild(this.table.getElement());
 
-	setViewData(data: string, clear: boolean): void {
-		CSV.parse(data).then((parsed) => {
-			this.table.clear();
-			this.table.setData(parsed);
-		});
-	}
+        tableState.$data.subscribe(({ row, cell, data }) => {
+            const tableRows = this.table.getRows();
+            tableRows[row][cell] = data;
 
-	clear(): void {
-		this.table.clear();
-	}
+            CSV.stringify(tableRows).then(data => {
+                this.data = data;
+            })
+        });
+    }
 
-	getDisplayText(): string {
-		return this.file
-			? this.file.basename
-			: 'No file';
-	}
+    getViewData(): string {
+        return this.data;
+    }
 
-	canAcceptExtension(extension: string): boolean {
-		return extension === 'csv';
-	}
+    setViewData(data: string, clear: boolean): void {
+        CSV.parse(data).then((parsed) => {
+            this.table.clear();
+            this.table.setRows(parsed);
+        });
+    }
 
-	getViewType(): string {
-		return 'csv';
-	}
+    clear(): void {
+        this.table.clear();
+        tableState.$data.clearAll();
+    }
 
-	getIcon(): string {
-		return 'document-csv';
-	}
+    getDisplayText(): string {
+        return this.file
+            ? this.file.basename
+            : 'No file';
+    }
+
+    canAcceptExtension(extension: string): boolean {
+        return extension === 'csv';
+    }
+
+    getViewType(): string {
+        return 'csv';
+    }
+
+    getIcon(): string {
+        return 'document-csv';
+    }
 }

@@ -1,14 +1,24 @@
 import { TableRow } from './row';
 
 export class CsvTable {
-    public tableElement = document.createElement('table');
+    private tableElement = document.createElement('table');
+    private rows: string[][];
 
-    public setData(rows: string[][]): void {
+    public setRows(rows: string[][]): void {
+        this.rows = rows;
         rows.forEach((row, index) => {
             this.tableElement.appendChild(
-                (new TableRow(row, index + 1)).getRow()
+                (new TableRow(row, index)).getRow()
             );
         });
+    }
+
+    public getRows() {
+        return this.rows;
+    }
+
+    public getElement(): HTMLElement {
+        return this.tableElement;
     }
 
     public clear(): void {

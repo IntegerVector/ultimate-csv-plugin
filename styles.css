@@ -26,3 +26,7 @@ tr:first-child {
 tr:nth-child(even) {
     background-color: var(--background-secondary);
 }
+
+.focused {
+    border: 0.2rem solid var(--text-accent);
+}

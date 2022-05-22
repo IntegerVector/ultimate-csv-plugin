@@ -1,4 +1,6 @@
+import { TableHeader } from './header';
 import { TableRow } from './row';
+import { TableCell } from 'src/table/cell';
 import { tableState } from '../table-state-manager';
 
 export class CsvTable {
@@ -7,6 +9,14 @@ export class CsvTable {
 
     public setRows(rows: string[][]): void {
         this.rows = rows;
+
+        const header = new TableHeader(this.getNewEmptyRow()).getRow();
+        header.appendChild(this.getAddItemElement(
+            'table-add-new-cell',
+            this.onNewCell.bind(this)
+        ));
+        this.tableElement.appendChild(header);
+
         rows.forEach((row, index) => {
             this.tableElement.appendChild(
                 (new TableRow(row, index)).getRow()
@@ -14,7 +24,10 @@ export class CsvTable {
 
             if (index === this.rows.length - 1) {
                 this.tableElement.appendChild(
-                    this.getAddItemElement()
+                    this.getAddItemElement(
+                        'table-add-new-row',
+                        this.onNewRow.bind(this)
+                    )
                 );
             }
         });
@@ -34,28 +47,44 @@ export class CsvTable {
         }
     }
 
-    private getAddItemElement(): HTMLElement {
-        const el = document.createElement('tr');
-        const plusIconEl = document.createElement('td');
-        plusIconEl.className = 'table-add-new-row';
-        plusIconEl.textContent = '+';
-        plusIconEl.onclick = () => {
-            this.onAddNewRowClicked();
+    private getAddItemElement(className: string, callBack: { (): void; }): HTMLElement {
+        const el = new TableCell({
+            text: '+',
+            editable: false,
+            rowIndex: -1,
+            cellIndex: -1,
+            className
+        }).getCell();
+
+        el.onclick = () => {
+            callBack();
         }
 
-        el.appendChild(plusIconEl);
         return el;
     }
 
-    private onAddNewRowClicked(): void {
+    private getNewEmptyRow(): string[] {
         if (this.rows.length) {
             const rowElementsAmount = this.rows[0].length;
             const newRow = new Array(rowElementsAmount);
             newRow.fill('');
 
-            tableState.$rowAdded.next(newRow);
+            return newRow;
         } else {
-            tableState.$rowAdded.next(['']);
+            return [''];
         }
+    }
+
+    private onNewRow(): void {
+        tableState.$rowAdded.next(this.getNewEmptyRow());
+    }
+
+    private onNewCell(): void {
+        const newRows = this.rows.map(row => {
+            row.push('');
+            return row;
+        });
+
+        tableState.$cellAdded.next(newRows);
     }
 }

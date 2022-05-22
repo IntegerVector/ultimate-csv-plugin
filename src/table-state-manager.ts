@@ -6,5 +6,6 @@ export const tableState = {
         row: number,
         cell: number
     }>(),
-    $rowAdded: new Subject<string[]>()
+    $rowAdded: new Subject<string[]>(),
+    $cellAdded: new Subject<string[][]>()
 };

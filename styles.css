@@ -1,11 +1,11 @@
+table, td, th, tr {
+    border-spacing: 0px;
+}
+
 table {
     color: var(--text-normal);
     background-color: var(--background-primary);
     border: 1px solid var(--background-modifier-border);
-}
-
-table, td, th, tr {
-    border-spacing: 0px;
 }
 
 tr:first-child {
@@ -31,9 +31,11 @@ th, td {
 .focused {
     border: 1px solid var(--interactive-accent);
     border-radius: 4px;
+    cursor: text;
 }
 
-.table-row-number, .table-add-new-row {
+.table-numbers, .table-add-new-cell, .table-add-new-row {
+    cursor: default;
     font-weight: 900;
     text-align: center;
     background-color: var(--background-secondary);
@@ -41,7 +43,8 @@ th, td {
     border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.table-add-new-row {
+.table-add-new-row, .table-add-new-cell {
+    cursor: pointer;
     display: grid;
     place-items: center;
     border-bottom: 0px solid transparent;
@@ -50,6 +53,11 @@ th, td {
     font-weight: 600;
 }
 
-.table-add-new-row:hover {
+.table-add-new-cell {
+    border-right: 0px solid transparent;
+    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.table-add-new-row:hover, .table-add-new-cell:hover {
     background-color: var(--interactive-accent-hover);
 }

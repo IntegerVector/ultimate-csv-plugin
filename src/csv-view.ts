@@ -67,20 +67,21 @@ export class CsvView extends TextFileView {
     }
 
     private initSubscriptions(): void {
-        this.subjects.push(
+        this.subjects = [
             tableState.$cellChanged.subscribe(({ row, cell, data }) => {
                 const tableRows = this.table.getRows();
                 tableRows[row][cell] = data;
                 this.updateData(tableRows); 
-            })
-        );
-        this.subjects.push(
+            }),
             tableState.$rowAdded.subscribe(row => {
                 const tableRows = this.table.getRows();
                 tableRows.push(row);
                 this.updateData(tableRows); 
+            }),
+            tableState.$cellAdded.subscribe(rows => {
+                this.updateData(rows);
             })
-        );
+        ];
     }
 
     private clearSubscriptions(): void {

@@ -1,27 +1,26 @@
-import { TableCell } from 'src/table/cell';
+import { TableCell } from './cell';
 
-export class TableRow {
+export class TableHeader {
     private element: HTMLElement;
 
-    constructor(cells: string[], rowIndex: number) {
+    constructor(template: string[]) {
         this.element = document.createElement('tr');
         this.element.appendChild(
             (new TableCell({
-                text: rowIndex + 1 + '',
-                editable: false,
+                text: ' ',
                 className: 'table-numbers',
+                editable: false,
                 rowIndex: -1,
-                cellIndex: -1
+                cellIndex: -1,
             }).getCell())
         );
-
-        cells.forEach((cellData, cellIndex) => {
+        template.forEach((cell, cellIndex) => {
             this.element.appendChild(
                 (new TableCell({
-                    text: cellData + '',
-                    editable: true,
-                    className: '',
-                    rowIndex,
+                    text: cellIndex + 1 + cell,
+                    className: 'table-numbers',
+                    editable: false,
+                    rowIndex: -1,
                     cellIndex
                 })).getCell()
             );

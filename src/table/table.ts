@@ -1,40 +1,18 @@
 import { TableHeader } from './header';
 import { TableRow } from './row';
-import { TableCell } from 'src/table/cell';
-import { tableState } from '../table-state-manager';
+import { TableCell } from './cell';
+import { Subject } from 'src/common/subject';
 
 export class CsvTable {
+    public $tableData = new Subject<string[][]>();
+
     private tableElement = document.createElement('table');
     private rows: string[][];
 
-    public setRows(rows: string[][]): void {
-        this.rows = rows;
-
-        const header = new TableHeader(this.getNewEmptyRow()).getRow();
-        header.appendChild(this.getAddItemElement(
-            'table-add-new-cell',
-            this.onNewCell.bind(this)
-        ));
-        this.tableElement.appendChild(header);
-
-        rows.forEach((row, index) => {
-            this.tableElement.appendChild(
-                (new TableRow(row, index)).getRow()
-            );
-
-            if (index === this.rows.length - 1) {
-                this.tableElement.appendChild(
-                    this.getAddItemElement(
-                        'table-add-new-row',
-                        this.onNewRow.bind(this)
-                    )
-                );
-            }
+    constructor() {
+        this.$tableData.subscribe(rows => {
+            this.setRows(rows);
         });
-    }
-
-    public getRows() {
-        return this.rows;
     }
 
     public getElement(): HTMLElement {
@@ -45,6 +23,38 @@ export class CsvTable {
         while (this.tableElement.lastChild) {
             this.tableElement.removeChild(this.tableElement.lastChild);
         }
+    }
+
+    private setRows(rows: string[][]): void {
+        this.rows = rows;
+
+        this.clear();
+
+        const header = new TableHeader(this.getNewEmptyRow()).getRow();
+        header.appendChild(this.getAddItemElement(
+            'table-add-new-cell',
+            this.onNewCell.bind(this)
+        ));
+        this.tableElement.appendChild(header);
+
+        rows.forEach((cells, rowIndex) => {
+            this.tableElement.appendChild(
+                (new TableRow({
+                    cells,
+                    rowIndex,
+                    onEdit: this.onCellEdit.bind(this)
+                })).getRow()
+            );
+
+            if (rowIndex === this.rows.length - 1) {
+                this.tableElement.appendChild(
+                    this.getAddItemElement(
+                        'table-add-new-row',
+                        this.onNewRow.bind(this)
+                    )
+                );
+            }
+        });
     }
 
     private getAddItemElement(className: string, callBack: { (): void; }): HTMLElement {
@@ -76,7 +86,8 @@ export class CsvTable {
     }
 
     private onNewRow(): void {
-        tableState.$rowAdded.next(this.getNewEmptyRow());
+        this.rows.push(this.getNewEmptyRow());
+        this.$tableData.next(this.rows);
     }
 
     private onNewCell(): void {
@@ -85,6 +96,11 @@ export class CsvTable {
             return row;
         });
 
-        tableState.$cellAdded.next(newRows);
+        this.$tableData.next(newRows);
+    }
+
+    private onCellEdit(data: string, row: number, cell: number): void {
+        this.rows[row][cell] = data;
+        this.$tableData.next(this.rows);
     }
 }

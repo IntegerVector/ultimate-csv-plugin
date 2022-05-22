@@ -1,5 +1,3 @@
-import { tableState } from 'src/table-state-manager';
-
 export class TableCell {
     private element: HTMLElement;
 
@@ -8,13 +6,21 @@ export class TableCell {
         rowIndex,
         cellIndex,
         editable,
-        className
+        className,
+        onEdit
     }: {
         text: string;
         rowIndex: number;
         cellIndex: number;
         editable: boolean,
-        className: string
+        className: string;
+        onEdit?: {
+            (
+                data: string,
+                row: number,
+                cell: number
+            ): void
+        }
     }) {
         this.element = document.createElement('td');
         const container = document.createElement('div');
@@ -31,12 +37,13 @@ export class TableCell {
             container.onblur = () => {
                 this.element.className = '';
                 container.contentEditable = 'false';
-
-                tableState.$cellChanged.next({
-                    data: container.textContent,
-                    row: rowIndex,
-                    cell: cellIndex
-                });
+                if (onEdit) {
+                    onEdit(
+                        container.textContent,
+                        rowIndex,
+                        cellIndex
+                    )
+                }
             };
         }
 

@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "72ab1b6994e086e2",
+        "id": "87c480f107747cb3",
         "type": "leaf",
         "state": {
           "type": "csv",
           "state": {
-            "file": "Operations.csv"
+            "file": "Dictionary.csv"
           }
         }
       }
@@ -67,7 +67,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Operations.csv",
+                "file": "Dictionary.csv",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -85,12 +85,12 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "72ab1b6994e086e2",
+  "active": "87c480f107747cb3",
   "lastOpenFiles": [
-    "Operations.csv",
-    "test.md",
     "Dictionary.csv",
     "Vaccinations.csv",
+    "test.md",
+    "Operations.csv",
     "Finance.csv"
   ]
 }

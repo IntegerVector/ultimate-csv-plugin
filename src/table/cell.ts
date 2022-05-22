@@ -19,7 +19,7 @@ export class TableCell {
             this.element.className = '';
             container.contentEditable = 'false';
 
-            tableState.$data.next({
+            tableState.$cellChanged.next({
                 data: container.textContent,
                 row: rowIndex,
                 cell: cellIndex

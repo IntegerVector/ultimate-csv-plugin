@@ -6,6 +6,7 @@ import {
 import { CsvTable } from 'src/table/table';
 import { CSV } from 'src/common/csv-parser';
 import { tableState } from 'src/table-state-manager';
+import { Subject } from 'src/common/subject';
 
 export class CsvView extends TextFileView {
     public get extContentEl(): HTMLElement {
@@ -14,19 +15,14 @@ export class CsvView extends TextFileView {
 
     public table = new CsvTable();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private subjects: Subject<any>[] = [];
+
     constructor(leaf: WorkspaceLeaf) {
         super(leaf);
 
         this.extContentEl.appendChild(this.table.getElement());
-
-        tableState.$data.subscribe(({ row, cell, data }) => {
-            const tableRows = this.table.getRows();
-            tableRows[row][cell] = data;
-
-            CSV.stringify(tableRows).then(data => {
-                this.data = data;
-            })
-        });
+        this.initSubscriptions();
     }
 
     getViewData(): string {
@@ -42,7 +38,7 @@ export class CsvView extends TextFileView {
 
     clear(): void {
         this.table.clear();
-        tableState.$data.clearAll();
+        this.clearSubscriptions();
     }
 
     getDisplayText(): string {
@@ -61,5 +57,35 @@ export class CsvView extends TextFileView {
 
     getIcon(): string {
         return 'document-csv';
+    }
+
+    private updateData(rows: string[][]): void {
+        CSV.stringify(rows).then(data => {
+            this.data = data;
+            this.setViewData(data, false);
+        })
+    }
+
+    private initSubscriptions(): void {
+        this.subjects.push(
+            tableState.$cellChanged.subscribe(({ row, cell, data }) => {
+                const tableRows = this.table.getRows();
+                tableRows[row][cell] = data;
+                this.updateData(tableRows); 
+            })
+        );
+        this.subjects.push(
+            tableState.$rowAdded.subscribe(row => {
+                const tableRows = this.table.getRows();
+                tableRows.push(row);
+                this.updateData(tableRows); 
+            })
+        );
+    }
+
+    private clearSubscriptions(): void {
+        this.subjects.forEach(sub => {
+            sub.clearAll();
+        });
     }
 }

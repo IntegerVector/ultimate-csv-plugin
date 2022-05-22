@@ -1,32 +1,55 @@
 table {
     color: var(--text-normal);
     background-color: var(--background-primary);
+    border: 1px solid var(--background-modifier-border);
 }
 
 table, td, th, tr {
-    border: 0 solid transparent;
     border-spacing: 0px;
-}
-
-td {
-    cursor: pointer;
-    text-align: left;
-    padding: 1rem;
-}
-
-td:hover {
-    transition: background-color 250ms;
-    background-color: var(--background-secondary-alt);
 }
 
 tr:first-child {
     font-weight: 900;
 }
 
+tr {
+    background-color: var(--background-primary-alt);
+}
+
 tr:nth-child(even) {
-    background-color: var(--background-secondary);
+    background-color: var(--background-secondary-alt);
+}
+
+th, td {
+    word-wrap: break-word;
+    padding: 4px 10px;
+    cursor: pointer;
+    text-align: left;
+    border: 1px solid transparent;
 }
 
 .focused {
-    border: 0.2rem solid var(--text-accent);
+    border: 1px solid var(--interactive-accent);
+    border-radius: 4px;
+}
+
+.table-row-number, .table-add-new-row {
+    font-weight: 900;
+    text-align: center;
+    background-color: var(--background-secondary);
+    border-right: 1px solid var(--background-modifier-border);
+    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.table-add-new-row {
+    display: grid;
+    place-items: center;
+    border-bottom: 0px solid transparent;
+    background-color: var(--interactive-accent);
+    font-size: larger;
+    font-weight: 600;
+}
+
+.table-add-new-row:hover {
+    background-color: var(--interactive-accent-hover);
 }

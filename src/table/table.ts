@@ -10,6 +10,7 @@ export class CsvTable {
     private rows: string[][];
 
     constructor() {
+        this.tableElement.className = 'ultimate-csv-plugin';
         this.$tableData.subscribe(rows => {
             this.setRows(rows);
         });
@@ -32,7 +33,7 @@ export class CsvTable {
 
         const header = new TableHeader(this.getNewEmptyRow()).getRow();
         header.appendChild(this.getAddItemElement(
-            'table-add-new-cell',
+            'ultimate-csv-plugin table-add-new-cell',
             this.onNewCell.bind(this)
         ));
         this.tableElement.appendChild(header);
@@ -49,7 +50,7 @@ export class CsvTable {
             if (rowIndex === this.rows.length - 1) {
                 this.tableElement.appendChild(
                     this.getAddItemElement(
-                        'table-add-new-row',
+                        'ultimate-csv-plugin table-add-new-row',
                         this.onNewRow.bind(this)
                     )
                 );

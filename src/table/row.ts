@@ -19,11 +19,12 @@ export class TableRow {
         }
     }) {
         this.element = document.createElement('tr');
+        this.element.className = 'ultimate-csv-plugin';
         this.element.appendChild(
             (new TableCell({
                 text: rowIndex + 1 + '',
                 editable: false,
-                className: 'table-numbers',
+                className: 'ultimate-csv-plugin table-numbers',
                 rowIndex: -1,
                 cellIndex: -1,
             }).getCell())

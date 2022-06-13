@@ -1,26 +1,30 @@
-table, td, th, tr {
+.ultimate-csv-plugin table,
+.ultimate-csv-plugin td,
+.ultimate-csv-plugin th,
+.ultimate-csv-plugin tr {
     border-spacing: 0px;
 }
 
-table {
+.ultimate-csv-plugin table {
     color: var(--text-normal);
     background-color: var(--background-primary);
     border: 1px solid var(--background-modifier-border);
 }
 
-tr:first-child {
+.ultimate-csv-plugin tr:first-child {
     font-weight: 900;
 }
 
-tr {
+.ultimate-csv-plugin tr {
     background-color: var(--background-primary-alt);
 }
 
-tr:nth-child(even) {
+.ultimate-csv-plugin tr:nth-child(even) {
     background-color: var(--background-secondary-alt);
 }
 
-th, td {
+.ultimate-csv-plugin th,
+.ultimate-csv-plugin td {
     word-wrap: break-word;
     padding: 4px 10px;
     cursor: pointer;
@@ -28,13 +32,15 @@ th, td {
     border: 1px solid transparent;
 }
 
-.focused {
+.ultimate-csv-plugin.focused {
     border: 1px solid var(--interactive-accent);
     border-radius: 4px;
     cursor: text;
 }
 
-.table-numbers, .table-add-new-cell, .table-add-new-row {
+.ultimate-csv-plugin.table-numbers, 
+.ultimate-csv-plugin.table-add-new-cell,
+.ultimate-csv-plugin.table-add-new-row {
     cursor: default;
     font-weight: 900;
     text-align: center;
@@ -43,7 +49,8 @@ th, td {
     border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.table-add-new-row, .table-add-new-cell {
+.ultimate-csv-plugin.table-add-new-row,
+.ultimate-csv-plugin.table-add-new-cell {
     cursor: pointer;
     display: grid;
     place-items: center;
@@ -53,11 +60,12 @@ th, td {
     font-weight: 600;
 }
 
-.table-add-new-cell {
+.ultimate-csv-plugin.table-add-new-cell {
     border-right: 0px solid transparent;
     border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.table-add-new-row:hover, .table-add-new-cell:hover {
+.ultimate-csv-plugin.table-add-new-row:hover,
+.ultimate-csv-plugin.table-add-new-cell:hover {
     background-color: var(--interactive-accent-hover);
 }

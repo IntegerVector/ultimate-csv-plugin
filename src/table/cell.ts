@@ -25,17 +25,19 @@ export class TableCell {
         this.element = document.createElement('td');
         const container = document.createElement('div');
 
+        this.element.className = 'ultimate-csv-plugin';
+        container.className = 'ultimate-csv-plugin';
         container.textContent = text;
 
         if (editable) {
             this.element.ondblclick = () => {
-                this.element.className = 'focused';
+                this.element.className = 'ultimate-csv-plugin focused';
                 container.contentEditable = 'true';
                 container.focus();
             }
 
             container.onblur = () => {
-                this.element.className = '';
+                this.element.className = 'ultimate-csv-plugin';
                 container.contentEditable = 'false';
                 if (onEdit) {
                     onEdit(

@@ -1,5 +1,5 @@
 /**
- * Simple realization of rxjs Subject object
+ * Simple realization of rxjs Subject object (with some differences)
  */
 export class Subject<T> {
     private subscribers: { (data: T): void }[] = [];

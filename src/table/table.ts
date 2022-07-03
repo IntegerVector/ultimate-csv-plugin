@@ -1,7 +1,8 @@
-import { TableHeader } from './header';
-import { TableRow } from './row';
-import { TableCell } from './cell';
+import { TableHeaders } from './table-headers';
+import { TableRow } from './table-row';
 import { Subject } from 'src/common/subject';
+import { TableCellEditDataInterface } from 'src/table/cells/types/table-cell-edit-action-data.interface';
+import { tableCellsManager } from './cells/table-cells-manager';
 
 export class CsvTable {
     public $tableData = new Subject<string[][]>();
@@ -21,21 +22,24 @@ export class CsvTable {
     }
 
     public clear(): void {
-        while (this.tableElement.lastChild) {
-            this.tableElement.removeChild(this.tableElement.lastChild);
-        }
+        this.tableElement.innerHTML = '';
     }
 
     private setRows(rows: string[][]): void {
         this.rows = rows;
-
         this.clear();
 
-        const header = new TableHeader(this.getNewEmptyRow()).getRow();
-        header.appendChild(this.getAddItemElement(
-            'ultimate-csv-plugin table-add-new-cell',
-            this.onNewCell.bind(this)
-        ));
+        const header = new TableHeaders(this.getNewEmptyRow()).getRowWithHeaders();
+        const newColBtn = tableCellsManager.getButtonCell(
+            '+',
+            'table-add-new-cell',
+            {
+                rowIndex: 0,
+                cellIndex: 0,
+                onClick: this.onNewCell.bind(this)
+            }
+        );
+        header.appendChild(newColBtn);
         this.tableElement.appendChild(header);
 
         rows.forEach((cells, rowIndex) => {
@@ -48,30 +52,18 @@ export class CsvTable {
             );
 
             if (rowIndex === this.rows.length - 1) {
-                this.tableElement.appendChild(
-                    this.getAddItemElement(
-                        'ultimate-csv-plugin table-add-new-row',
-                        this.onNewRow.bind(this)
-                    )
+                const newRowBtn = tableCellsManager.getButtonCell(
+                    '+',
+                    'table-add-new-row',
+                    {
+                        rowIndex: 0,
+                        cellIndex: 0,
+                        onClick: this.onNewRow.bind(this)
+                    }
                 );
+                this.tableElement.appendChild(newRowBtn);
             }
         });
-    }
-
-    private getAddItemElement(className: string, callBack: { (): void; }): HTMLElement {
-        const el = new TableCell({
-            text: '+',
-            editable: false,
-            rowIndex: -1,
-            cellIndex: -1,
-            className
-        }).getCell();
-
-        el.onclick = () => {
-            callBack();
-        }
-
-        return el;
     }
 
     private getNewEmptyRow(): string[] {
@@ -100,8 +92,8 @@ export class CsvTable {
         this.$tableData.next(newRows);
     }
 
-    private onCellEdit(data: string, row: number, cell: number): void {
-        this.rows[row][cell] = data;
+    private onCellEdit(results: TableCellEditDataInterface): void {
+        this.rows[results.rowIndex][results.cellIndex] = results.data;
         this.$tableData.next(this.rows);
     }
 }

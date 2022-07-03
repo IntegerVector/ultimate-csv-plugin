@@ -31,6 +31,16 @@ table.ultimate-csv-plugin {
     cursor: text;
 }
 
+.ultimate-csv-plugin.table-numbers div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ultimate-csv-plugin.table-numbers div a {
+    margin-bottom: 2px;
+}
+
 .ultimate-csv-plugin.table-numbers, 
 .ultimate-csv-plugin.table-add-new-cell,
 .ultimate-csv-plugin.table-add-new-row {

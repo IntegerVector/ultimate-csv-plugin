@@ -1,5 +1,6 @@
 import { TableCellButtonActionInterface } from 'src/table/cells/types/table-cell-button-action.interface';
 import { TableCellEditActionParamsInterface } from 'src/table/cells/types/table-cell-edit-action-params.interface';
+import { TableCellListActionParamsInterface } from 'src/table/cells/types/table-cell-list-action-params.interface';
 import { TableCellsBuilder } from './table-cells-builder';
 
 class TableCellsManager {
@@ -8,18 +9,26 @@ class TableCellsManager {
         return builder.build();
     }
 
-    public getHeaderNumberCell(number: string): HTMLElement {
+    public getHeaderNumberCell(
+        number: string,
+        actions: TableCellListActionParamsInterface[]
+    ): HTMLElement {
         const builder = new TableCellsBuilder();
         return builder
             .withClassName('table-numbers')
             .withContent(number)
+            .withListOfAction(actions)
             .build();
     }
 
-    public getRowNumberCell(number: string): HTMLElement {
+    public getRowNumberCell(
+        number: string,
+        actions: TableCellListActionParamsInterface[]
+    ): HTMLElement {
         const builder = new TableCellsBuilder();
         return builder
             .withClassName('table-numbers')
+            .withListOfAction(actions)
             .withContent(number)
             .build();
     }

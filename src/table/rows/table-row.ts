@@ -1,6 +1,7 @@
 import { TableCellListActionParamsInterface } from 'src/table/cells/types/table-cell-list-action-params.interface';
 import { TableCellEditDataInterface } from 'src/table/cells/types/table-cell-edit-action-data.interface';
-import { tableCellsManager } from './cells/table-cells-manager';
+import { tableCellsManager } from '../cells/table-cells-manager';
+import { ROW_INSERT_AFTER, ROW_INSERT_BEFORE, ROW_MOVE_NEXT, ROW_MOVE_PREV, ROW_DELETE } from 'src/table/constants/table-row-actions';
 
 export class TableRow {
     private element: HTMLElement;
@@ -8,18 +9,20 @@ export class TableRow {
     constructor({
         cells,
         rowIndex,
-        onEdit
+        onEdit,
+        onAction
     }: {
         cells: string[];
         rowIndex: number;
-        onEdit: {(params: TableCellEditDataInterface): void}
+        onEdit: {(params: TableCellEditDataInterface): void},
+        onAction: {(id: string, rowIndex: number): void}
     }) {
         this.element = document.createElement('tr');
         this.element.className = 'ultimate-csv-plugin';
         this.element.appendChild(
             tableCellsManager.getRowNumberCell(
                 rowIndex + 1 + '',
-                this.getHeaderActions()
+                this.getHeaderActions(rowIndex, onAction)
             )
         );
         cells.forEach((cellData, cellIndex) => {
@@ -39,46 +42,49 @@ export class TableRow {
         return this.element;
     }
 
-    private getHeaderActions(): TableCellListActionParamsInterface[] {
+    private getHeaderActions(
+        rowIndex: number,
+        onAction: {(id: string, rowIndex: number): void}
+    ): TableCellListActionParamsInterface[] {
         return [
             {
-                id: 'insert-after-row',
+                id: ROW_INSERT_AFTER,
                 icon: 'create-new',
                 label: 'Insert after',
-                onSelect: (id, el) => {
-                    console.log('on insert after: ', id, el);
+                onSelect: () => {
+                    onAction(ROW_INSERT_AFTER, rowIndex);
                 }
             },
             {
-                id: 'insert-before-row',
+                id: ROW_INSERT_BEFORE,
                 icon: 'create-new',
                 label: 'Insert before',
-                onSelect: (id, el) => {
-                    console.log('on insert before: ', id, el);
+                onSelect: () => {
+                    onAction(ROW_INSERT_BEFORE, rowIndex);
                 }
             },
             {
-                id: 'move-to-next-row',
+                id: ROW_MOVE_NEXT,
                 icon: 'up-and-down-arrows',
                 label: 'Move to next',
-                onSelect: (id, el) => {
-                    console.log('on move after: ', id, el);
+                onSelect: () => {
+                    onAction(ROW_MOVE_NEXT, rowIndex);
                 }
             },
             {
-                id: 'move-to-prev-row',
+                id: ROW_MOVE_PREV,
                 icon: 'up-and-down-arrows',
                 label: 'Move to previous',
-                onSelect: (id, el) => {
-                    console.log('on move before: ', id, el);
+                onSelect: () => {
+                    onAction(ROW_MOVE_PREV, rowIndex);
                 }
             },
             {
-                id: 'delete-row',
+                id: ROW_DELETE,
                 icon: 'trash',
                 label: 'Delete row',
-                onSelect: (id, el) => {
-                    console.log('on delete:', id, el)
+                onSelect: () => {
+                    onAction(ROW_DELETE, rowIndex);
                 }
             }
         ];

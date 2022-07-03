@@ -29,7 +29,7 @@ export class CsvView extends TextFileView {
     }
 
     setViewData(data: string, clear: boolean): void {
-        CSV.parse(data).then((parsed) => {
+        CSV.parse(data || '').then((parsed) => {
             this.table.$tableData.next(parsed);
         });
     }

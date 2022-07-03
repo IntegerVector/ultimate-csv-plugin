@@ -9,12 +9,14 @@ export class CSV {
         }
 
         return new Promise((resolve, reject) => {
-            Papa.parse(text, {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            Papa.parse(<any>text, {
                 header: false,
                 complete: (res: { data: string[][] }) => {
                     resolve(res.data);
                 },
-                error: (err: Papa.ParseError) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                error: (err: any) => {
                     reject(err);
                 }
             });

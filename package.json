@@ -4,6 +4,7 @@
 	"description": "View and edit CSV files",
 	"main": "main.js",
 	"scripts": {
+		"tsc" : "tsc",
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"copy": "cp ./main.js ./Test/.obsidian/plugins/ultimate-csv-plugin/main.js && cp ./styles.css  ./Test/.obsidian/plugins/ultimate-csv-plugin/styles.css && cp ./manifest.json  ./Test/.obsidian/plugins/ultimate-csv-plugin/manifest.json",
